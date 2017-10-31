@@ -1,0 +1,17 @@
+each Thing publishes topic "<aggregator device id>"
+Aggregators subscribe to their Things and aggregate
+Parents subscribe to their Aggregators' topics -"<parent deviceId>" 
+Coordinator subscribes to top-level aggregators "<coordinator deviceId>"
+Platform subscribes to Coordinator
+
+aggregators publish aggregate values to coordinator groups
+
+Platform publishes to coordinators "<coordinatorid>"
+
+
+coordinators seperate out messages and forward to relevant brokers
+brokers publish to controller topics
+
+device (controllers) subscribe to their own topics
+devicea subscribe to control coordinator groups
+
