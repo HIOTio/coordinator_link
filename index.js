@@ -36,15 +36,29 @@ app.options('*', cors());
 var handlers={}
 var topics={}
 // connect to MQTT server
-if(config.preventMosca){
+
+server= new mosca.Server({port:config.mqttPort});
+server.on('ready', setup);
+
+server.on('clientConnected', function(client) {
+	console.log('client connected', client.id);		
+});
+
+// fired when a message is received
+server.on('published', function(packet, client) {
+  console.log('Published', packet.payload);
+});
+
+// fired when the mqtt server is ready
+function setup() {
+  console.log('Mosca server is up and running')
+}
 var client = mqtt.connect(MQTT_ADDR, {
   keepalive: 0,
   debug: false
 })
-}else{
   
-client= new mosca.Server({port:config.mqttPort});
-}
+
 for (var i = 0; i < config.mqttTopic.length; i++) {
   topics[config.mqttTopic[i].topic.slice(0,1)]= config.mqttTopic[i]
   
