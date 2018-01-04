@@ -1,57 +1,57 @@
-var config = require('./config')
-var mqtt = require('mqtt')
-var MQTT_ADDR = config.mqttServer
-var MQTT_PORT = config.mqttPort
-var messaging = require('./topic')
-var express = require('express')
-var bodyParser = require('body-parser')
-var mosca= require('mosca')
-var expressValidator = require('express-validator')
-var app = express()
-var socketSend={}
+var config = require("./config");
+var mqtt = require("mqtt");
+var MQTT_ADDR = config.mqttServer;
+var MQTT_PORT = config.mqttPort;
+var messaging = require("./topic");
+var express = require("express");
+var bodyParser = require("body-parser");
+var mosca= require("mosca");
+var expressValidator = require("express-validator");
+var app = express();
+var socketSend={};
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 // Set up websockets
-var expressWs = require('express-ws')(app);
-app.post('/m2m/', function(req,res,next){
+var expressWs = require("express-ws")(app);
+app.post("/m2m/", function(req,res,next){
     if(req.body.topic && req.body.message){
-      client.publish(req.body.topic,JSON.stringify(req.body.message))
-      res.send({status:"OK"})
+      client.publish(req.body.topic,JSON.stringify(req.body.message));
+      res.send({status:"OK"});
     }else{
-      res.send({err:"malformed",msg:"you need to include a topic and message as part of the body"})
-      socketSend.send("inbound request from platform failed")
+      res.send({err:"malformed",msg:"you need to include a topic and message as part of the body"});
+      socketSend.send("inbound request from platform failed");
 
     }
-})
-var cors = require('cors')
+});
+var cors = require("cors");
 app.use(bodyParser.urlencoded({
-  extended: 'false'
-}))
+  extended: "false"
+}));
 app.use(expressValidator())
 app.use(cors({
-    origin: ['http://localhost:4200','http://localhost:3000']
-}))
+    origin: ["http://localhost:4200","http://localhost:3000"]
+}));
 
-app.options('*', cors());
-var handlers={}
-var topics={}
+app.options("*", cors());
+var handlers={};
+var topics={};
 // connect to MQTT server
 
 server= new mosca.Server({port:config.mqttPort});
-server.on('ready', setup);
+server.on("ready", setup);
 
-server.on('clientConnected', function(client) {
-	console.log('client connected', client.id);		
+server.on("clientConnected", function(client) {
+	console.log("client connected", client.id);		
 });
 
 // fired when a message is received
-server.on('published', function(packet, client) {
-  console.log('Published', packet.payload);
+server.on("published", function(packet, client) {
+  console.log("Published", packet.payload);
 });
 
 // fired when the mqtt server is ready
 function setup() {
-  console.log('Mosca server is up and running')
+  console.log("Mosca server is up and running")
 }
 var client = mqtt.connect(MQTT_ADDR, {
   keepalive: 0,
@@ -63,7 +63,7 @@ for (var i = 0; i < config.mqttTopic.length; i++) {
   topics[config.mqttTopic[i].topic.slice(0,1)]= config.mqttTopic[i]
   
 }
-messaging(client,topics,socketSend)
+messaging(client,topics,socketSend);
 
 app.listen(3001, function () {
- })
+ });

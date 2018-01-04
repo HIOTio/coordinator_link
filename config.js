@@ -1,11 +1,11 @@
 module.exports = {
 preventMosca:true, //use this when debugging full platform, use the mosca server from the coordinator
-  'mqttPort': 1883,
-  'mqttServer': 'http://localhost',
-  'mqttTopic': [{
-    name: 'sensor readings',
-    topic: 's/#',
-    model: 'sensor_reading',
+  "mqttPort": 1883,
+  "mqttServer": "http://localhost",
+  "mqttTopic": [{
+    name: "sensor readings",
+    topic: "s/#",
+    model: "sensor_reading",
     tellPlatform:false
   },    
 {
@@ -48,5 +48,5 @@ preventMosca:true, //use this when debugging full platform, use the mosca server
     function:"agg_data"
 }
   ],
-  'database': 'mongodb://localhost/hiot'
-}
+  "database": "mongodb://localhost/hiot"
+};
