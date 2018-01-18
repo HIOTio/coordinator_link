@@ -4,48 +4,49 @@ preventMosca:true, //use this when debugging full platform, use the mosca server
   "mqttServer": "http://localhost",
   "mqttTopic": [{
     name: "sensor readings",
-    topic: "s/#",
+    topic: "s",
     model: "sensor_reading",
     tellPlatform:false
   },    
 {
-    topic:"e/#",
+    topic:"e",
     name:"Error message from the deployment",
     model:"error",
     function:"error",
     tellPlatform:true
 },
 {
-    topic:"r/#",
+    topic:"r",
     name:"response from the deployment",
     function: "deployment_response",
     model:"deployment_responses"
 },
 {
-    topic:"h/#",
+    topic:"h",
     name:"health message from the deployment",
     model:"health",
     function:"healthMessage"
 },
 {
-    topic:"c/#",
+    topic:"c",
     name:"config message from the deployment",
     function:"config_responses"
 },
 {
-    topic:"q/#",
+    topic:"q",
     name:"query from the deployment",
     function:"deployment_query"
 },
 {
-    topic:"x/#",
-    name:"execute command from the platform",
+    topic:"x",
+    name:"execute command from the deployment",
     function:"execution_responses"
 },
 {
-    topic:"a/#",
+    topic:"a",
     name:"aggregation data from the deployment",
-    function:"agg_data"
+    function:"agg_data",
+    handler: "agg_data"
 }
   ],
   "database": "mongodb://localhost/hiot"
