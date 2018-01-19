@@ -1,7 +1,7 @@
-var fs = require('fs');
-var debug = require('debug')('handlers\agg_data.js');
+var fs = require("fs");
+var debug = require("debug")("handlers\agg_data.js");
 //loop through the aggregator folder and create an associative array of aggregator handlers
-aggHandlers={}
+var aggHandlers={}
 fs.readdir("./handlers/aggregators", function( err, files) {
     if (err){
         debug(err);

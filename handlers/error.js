@@ -1,5 +1,3 @@
-module.exports={
-    handleMessage:function(topic,message){
+exports.handleMessage (topic,message)= {
         
     }
-}

@@ -13,16 +13,7 @@ var socketSend={};
 app.use(bodyParser.json());
 // Set up websockets
 var expressWs = require("express-ws")(app);
-app.post("/m2m/", function(req,res,next){
-    if(req.body.topic && req.body.message){
-      client.publish(req.body.topic,JSON.stringify(req.body.message));
-      res.send({status:"OK"});
-    }else{
-      res.send({err:"malformed",msg:"you need to include a topic and message as part of the body"});
-      socketSend.send("inbound request from platform failed");
 
-    }
-});
 var cors = require("cors");
 app.use(bodyParser.urlencoded({
   extended: "false"
@@ -39,7 +30,7 @@ var handlers={};
 var topics={};
 // connect to MQTT server
 if (!config.preventMosca){
-server= new mosca.Server({port:config.mqttPort});
+var server= new mosca.Server({port:config.mqttPort});
 server.on("ready", setup);
 
 server.on("clientConnected", function(client) {
@@ -61,7 +52,16 @@ var client = mqtt.connect(MQTT_ADDR, {
   keepalive: 0,
   debug: false
 });
-  
+app.post("/m2m/", function(req,res,next){
+    if(req.body.topic && req.body.message){
+      client.publish(req.body.topic,JSON.stringify(req.body.message));
+      res.send({status:"OK"});
+    }else{
+      res.send({err:"malformed",msg:"you need to include a topic and message as part of the body"});
+      socketSend.send("inbound request from platform failed");
+
+    }
+});
 
 for (var i = 0; i < config.mqttTopic.length; i++) {
   topics[config.mqttTopic[i].topic.slice(0,1)]= config.mqttTopic[i];

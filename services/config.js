@@ -3,13 +3,13 @@ Manage exchange of config files between platform and devices
 
 */
 module.exports={
-    pushToDevice: function(deviceId,config){
+    pushToDevice(deviceId,config) = {
 
     },
-    requestFromDevice: function(deviceId){
+    requestFromDevice (deviceId)= {
 
     },
-    receiveFromDevice: function(){
+    receiveFromDevice () ={
 
     }
 
